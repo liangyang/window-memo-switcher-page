@@ -736,6 +736,9 @@
     .gallery-bar .dots { display: inline-flex; gap: 6px; }
     .gallery-bar .dots i { width: 9px; height: 9px; border-radius: 50%; background: #2a3340; }
 
+    /* Windows製品なので、Mac風のウィンドウ枠(タイトルバー＋信号機ドット)は出さない */
+    .frame-bar, .gallery-bar { display: none; }
+
     .gallery-shot img {
       display: block;
       width: 100%;
