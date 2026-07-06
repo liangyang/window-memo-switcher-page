@@ -10,39 +10,42 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://liangyang.github.io/window-memo-switcher-page/">
   <meta property="og:site_name" content="Window Memo Switcher">
-  <meta property="og:image" content="https://liangyang.github.io/window-memo-switcher-page/assets/landing_hero.png">
-  <meta property="og:image:secure_url" content="https://liangyang.github.io/window-memo-switcher-page/assets/landing_hero.png">
+  <meta property="og:image" content="https://liangyang.github.io/window-memo-switcher-page/assets/landing_og.png">
+  <meta property="og:image:secure_url" content="https://liangyang.github.io/window-memo-switcher-page/assets/landing_og.png">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Window Memo Switcher">
   <meta name="twitter:description" content="切り替える、残す、あとから見つける。Windows作業の切替・記録・再検索ツール。">
-  <meta name="twitter:image" content="https://liangyang.github.io/window-memo-switcher-page/assets/landing_hero.png">
+  <meta name="twitter:image" content="https://liangyang.github.io/window-memo-switcher-page/assets/landing_og.png">
   <link rel="icon" href="assets/WindowMemoSwitcher_256.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Murecho:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      color-scheme: dark;
-      --bg: #06080c;
-      --bg-2: #0a0e15;
-      --panel: #0f141d;
-      --panel-2: #131a25;
-      --ink: #eef3fa;
-      --muted: #95a2b5;
-      --faint: #66728499;
-      --line: rgba(255, 255, 255, .08);
-      --line-2: rgba(255, 255, 255, .14);
-      --accent: #4da3ff;
-      --accent-2: #58e6cf;
-      --accent-ink: #bfe2ff;
-      --accent-soft: rgba(77, 163, 255, .12);
-      --glow: rgba(77, 163, 255, .45);
+      color-scheme: light;
+      --paper: #ffffff;
+      --paper-2: #f5f5f1;
+      --paper-3: #ecece6;
+      --ink: #0c0e12;
+      --ink-2: #383e47;
+      --muted: #6a7280;
+      --faint: #9aa1ab;
+      --line: rgba(12, 14, 18, .10);
+      --line-2: rgba(12, 14, 18, .16);
+      --accent: #2f5cff;
+      --accent-press: #1f45d6;
+      --accent-ink: #1f45d6;
+      --accent-soft: rgba(47, 92, 255, .09);
+      --key-face-a: #262b34;
+      --key-face-b: #14171d;
+      --key-ink: #eef2f8;
       --r: 16px;
-      --r-sm: 11px;
-      --shadow: 0 28px 70px -28px rgba(0, 0, 0, .85), 0 10px 26px -16px rgba(0, 0, 0, .6);
+      --r-sm: 10px;
+      --shadow-shot: 0 1px 2px rgba(12, 14, 18, .05), 0 30px 60px -30px rgba(12, 14, 18, .28);
+      --shadow-card: 0 1px 2px rgba(12, 14, 18, .04), 0 18px 40px -28px rgba(12, 14, 18, .22);
       --font-display: "Zen Kaku Gothic New", "Yu Gothic UI", "Meiryo", sans-serif;
       --font-body: "Murecho", "Yu Gothic UI", "Meiryo", sans-serif;
       --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
@@ -55,81 +58,62 @@
     body {
       margin: 0;
       color: var(--ink);
-      background: var(--bg);
+      background: var(--paper);
       font-family: var(--font-body);
+      font-size: 16px;
       line-height: 1.75;
       -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
       overflow-x: hidden;
     }
 
-    /* atmospheric background layers */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -3;
-      background:
-        radial-gradient(900px 600px at 12% -8%, rgba(77, 163, 255, .18), transparent 60%),
-        radial-gradient(800px 600px at 100% 0%, rgba(88, 230, 207, .10), transparent 55%),
-        radial-gradient(1000px 800px at 50% 120%, rgba(77, 163, 255, .08), transparent 60%),
-        linear-gradient(180deg, var(--bg-2), var(--bg) 60%);
-    }
-
-    /* faint engineering grid */
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, .03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, .03) 1px, transparent 1px);
-      background-size: 64px 64px;
-      mask-image: radial-gradient(circle at 50% 18%, #000 0%, transparent 78%);
-      -webkit-mask-image: radial-gradient(circle at 50% 18%, #000 0%, transparent 78%);
-      pointer-events: none;
-    }
-
-    /* grain overlay */
-    .grain {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      opacity: .04;
-      mix-blend-mode: overlay;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    }
-
     a { color: inherit; }
+    img { max-width: 100%; }
+    ::selection { background: rgba(47, 92, 255, .18); }
 
-    ::selection { background: rgba(77, 163, 255, .3); }
+    /* ---------- shared layout ---------- */
+    .wrap { width: min(1160px, 100%); margin: 0 auto; padding-inline: 24px; }
 
-    /* ---------- typography helpers ---------- */
-    .overline {
+    section { position: relative; padding: 108px 0; }
+    section.alt { background: var(--paper-2); }
+
+    .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 10px;
+      margin: 0 0 18px;
       font-family: var(--font-mono);
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 600;
-      letter-spacing: .22em;
+      letter-spacing: .2em;
       text-transform: uppercase;
       color: var(--accent-ink);
     }
-
-    .overline::before {
+    .eyebrow::before {
       content: "";
-      width: 26px;
-      height: 1px;
-      background: linear-gradient(90deg, var(--accent), transparent);
+      width: 22px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
     }
 
-    .gradient-text {
-      background: linear-gradient(100deg, var(--accent), var(--accent-2));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+    .section-head { max-width: 760px; margin-bottom: 60px; }
+
+    .section-title {
+      margin: 0;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 1.16;
+      letter-spacing: -.02em;
+    }
+
+    .section-lead {
+      max-width: 680px;
+      margin: 20px 0 0;
+      color: var(--ink-2);
+      font-size: clamp(16px, 1.6vw, 18px);
+      font-weight: 400;
     }
 
     /* ---------- keycaps (signature element) ---------- */
@@ -143,38 +127,42 @@
       font-family: var(--font-mono);
       font-size: 12.5px;
       font-weight: 700;
-      color: #dce8f7;
-      background: linear-gradient(180deg, #1b2433, #0f1620);
-      border: 1px solid rgba(255, 255, 255, .16);
+      color: var(--key-ink);
+      background: linear-gradient(180deg, var(--key-face-a), var(--key-face-b));
       border-radius: 8px;
       box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, .14),
-        0 2px 0 rgba(0, 0, 0, .55),
-        0 4px 10px rgba(0, 0, 0, .45);
-      transition: transform .12s ease, box-shadow .12s ease;
+        inset 0 1px 0 rgba(255, 255, 255, .16),
+        inset 0 -2px 0 rgba(0, 0, 0, .35),
+        0 2px 0 #b9bdc4,
+        0 4px 10px rgba(12, 14, 18, .22);
     }
+    .kbd-combo { display: inline-flex; align-items: center; gap: 6px; }
+    .kbd-combo .plus { font-family: var(--font-mono); color: var(--faint); font-size: 12px; }
 
-    .kbd-combo {
+    /* keycap eyebrow: real shortcut labels a section instead of 01/02/03 */
+    .key-eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 12px;
+      margin-bottom: 18px;
     }
-
-    .kbd-combo .plus {
+    .key-eyebrow .label {
       font-family: var(--font-mono);
-      color: var(--faint);
       font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--muted);
     }
 
     /* ---------- buttons ---------- */
     .button {
-      position: relative;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 9px;
-      min-height: 48px;
-      padding: 12px 22px;
+      gap: 8px;
+      min-height: 50px;
+      padding: 13px 24px;
       border-radius: var(--r-sm);
       border: 1px solid transparent;
       font-family: var(--font-body);
@@ -184,31 +172,27 @@
       line-height: 1.2;
       white-space: nowrap;
       cursor: pointer;
-      transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+      transition: transform .16s ease, box-shadow .16s ease, background .16s ease, border-color .16s ease, color .16s ease;
     }
-
     .button.primary {
-      color: #04121f;
-      background: linear-gradient(120deg, var(--accent), var(--accent-2));
-      box-shadow: 0 12px 30px -8px var(--glow), inset 0 1px 0 rgba(255, 255, 255, .35);
+      color: #fff;
+      background: var(--accent);
+      box-shadow: 0 10px 24px -10px rgba(47, 92, 255, .6);
     }
-
     .button.primary:hover {
+      background: var(--accent-press);
       transform: translateY(-2px);
-      box-shadow: 0 18px 40px -8px var(--glow), inset 0 1px 0 rgba(255, 255, 255, .45);
+      box-shadow: 0 16px 30px -10px rgba(47, 92, 255, .6);
     }
-
-    .button.secondary {
+    .button.ghost {
       color: var(--ink);
-      background: rgba(255, 255, 255, .04);
+      background: transparent;
       border-color: var(--line-2);
-      backdrop-filter: blur(6px);
     }
-
-    .button.secondary:hover {
+    .button.ghost:hover {
       transform: translateY(-2px);
-      border-color: rgba(77, 163, 255, .55);
-      background: rgba(77, 163, 255, .08);
+      border-color: var(--ink);
+      background: var(--paper);
     }
 
     /* ---------- header ---------- */
@@ -216,26 +200,21 @@
       position: fixed;
       inset: 0 0 auto;
       z-index: 50;
-      transition: background .25s ease, border-color .25s ease, backdrop-filter .25s ease;
       border-bottom: 1px solid transparent;
+      transition: background .25s ease, border-color .25s ease, backdrop-filter .25s ease;
     }
-
     .site-header.scrolled {
-      background: rgba(8, 11, 16, .72);
+      background: rgba(255, 255, 255, .78);
       border-bottom-color: var(--line);
       backdrop-filter: blur(14px) saturate(140%);
     }
-
     .nav {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 16px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 20px;
+      padding: 15px 0;
     }
-
     .brand {
       display: flex;
       align-items: center;
@@ -244,111 +223,52 @@
       font-family: var(--font-display);
       font-weight: 700;
       font-size: 16px;
+      letter-spacing: -.01em;
       text-decoration: none;
     }
-
     .brand img {
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       flex: 0 0 auto;
-      border-radius: 9px;
-      box-shadow: 0 0 0 1px var(--line), 0 6px 18px -6px var(--glow);
+      border-radius: 8px;
+      box-shadow: 0 0 0 1px var(--line);
     }
-
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 26px;
+      gap: 30px;
       color: var(--muted);
       font-family: var(--font-mono);
       font-size: 13px;
     }
-
     .nav-links a:not(.button) {
+      position: relative;
       text-decoration: none;
       white-space: nowrap;
-      position: relative;
       transition: color .18s ease;
     }
-
     .nav-links a:not(.button)::after {
       content: "";
       position: absolute;
       left: 0;
       bottom: -5px;
       width: 0;
-      height: 1.5px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      height: 2px;
+      background: var(--accent);
       transition: width .22s ease;
     }
-
-    .nav-links a:not(.button):hover {
-      color: var(--ink);
-    }
-
-    .nav-links a:not(.button):hover::after {
-      width: 100%;
-    }
-
-    .nav-links .button {
-      min-height: 40px;
-      padding: 9px 16px;
-      font-size: 13.5px;
-    }
+    .nav-links a:not(.button):hover { color: var(--ink); }
+    .nav-links a:not(.button):hover::after { width: 100%; }
+    .nav-links .button { min-height: 40px; padding: 9px 16px; font-size: 13.5px; }
 
     /* ---------- hero ---------- */
-    .hero {
-      position: relative;
-      min-height: min(900px, 100svh);
-      padding: 150px 24px 80px;
+    .hero { padding: 152px 0 96px; overflow: hidden; }
+    .hero-grid {
       display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
       align-items: center;
-      overflow: hidden;
-      isolation: isolate;
+      gap: 56px;
     }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -2;
-      background:
-        linear-gradient(85deg, rgba(6, 8, 12, .97) 0%, rgba(6, 8, 12, .9) 38%, rgba(6, 8, 12, .55) 70%, rgba(6, 8, 12, .35) 100%),
-        url("assets/landing_hero.png") center right / cover no-repeat;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: auto 0 0;
-      height: 220px;
-      z-index: -1;
-      background: linear-gradient(180deg, transparent, var(--bg));
-    }
-
-    .hero-orb {
-      position: absolute;
-      z-index: -1;
-      width: 520px;
-      height: 520px;
-      right: 4%;
-      top: 18%;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(77, 163, 255, .35), transparent 62%);
-      filter: blur(20px);
-      animation: float 14s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(-26px, 28px) scale(1.07); }
-    }
-
-    .hero-inner {
-      width: min(1180px, 100%);
-      margin: 0 auto;
-    }
-
     .status {
       display: inline-flex;
       align-items: center;
@@ -357,199 +277,113 @@
       margin-bottom: 26px;
       border: 1px solid var(--line-2);
       border-radius: 999px;
-      background: rgba(255, 255, 255, .04);
-      backdrop-filter: blur(6px);
+      background: var(--paper);
       font-family: var(--font-mono);
-      font-size: 12.5px;
-      letter-spacing: .04em;
+      font-size: 12px;
+      letter-spacing: .03em;
       color: var(--muted);
     }
-
     .status .dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: var(--accent-2);
-      box-shadow: 0 0 0 0 rgba(88, 230, 207, .6);
+      background: var(--accent);
+      box-shadow: 0 0 0 0 rgba(47, 92, 255, .5);
       animation: pulse 2.4s ease-out infinite;
     }
-
     @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(88, 230, 207, .55); }
-      70% { box-shadow: 0 0 0 10px rgba(88, 230, 207, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(88, 230, 207, 0); }
+      0% { box-shadow: 0 0 0 0 rgba(47, 92, 255, .5); }
+      70% { box-shadow: 0 0 0 10px rgba(47, 92, 255, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(47, 92, 255, 0); }
     }
-
     h1 {
       margin: 0;
       font-family: var(--font-display);
       font-weight: 900;
-      font-size: clamp(33px, 7.4vw, 80px);
+      font-size: clamp(34px, 5.6vw, 70px);
       line-height: 1.06;
-      letter-spacing: -.01em;
+      letter-spacing: -.03em;
     }
-
-    h1 .line {
-      display: block;
-      white-space: nowrap;
-    }
-
+    h1 .line { display: block; white-space: nowrap; }
+    h1 .accent { color: var(--accent); }
     .hero-copy {
-      max-width: 600px;
+      max-width: 520px;
       margin: 26px 0 0;
-      color: rgba(238, 243, 250, .82);
-      font-size: clamp(16px, 2.1vw, 20px);
-      font-weight: 500;
+      color: var(--ink-2);
+      font-size: clamp(16px, 1.7vw, 19px);
+      font-weight: 400;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+
+    .hero-shot { position: relative; }
+    .hero-shot::before {
+      content: "";
+      position: absolute;
+      inset: -8% -6% -12% -6%;
+      z-index: -1;
+      background: radial-gradient(60% 60% at 70% 30%, var(--accent-soft), transparent 70%);
     }
 
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 36px;
-    }
-
+    /* shortcut strip (signature repeated) */
     .shortcut-strip {
       display: flex;
       flex-wrap: wrap;
-      gap: 22px 30px;
+      gap: 14px 26px;
       margin: 44px 0 0;
-      padding: 0;
+      padding: 22px 0 0;
+      border-top: 1px solid var(--line);
       list-style: none;
     }
-
     .shortcut-strip li {
       display: flex;
       align-items: center;
       gap: 11px;
-      color: rgba(238, 243, 250, .72);
+      color: var(--ink-2);
       font-size: 14px;
       font-weight: 500;
     }
 
-    /* ---------- sections ---------- */
-    section {
-      position: relative;
-      padding: 110px 24px;
-    }
-
-    .section-inner {
-      width: min(1180px, 100%);
-      margin: 0 auto;
-    }
-
-    .section-head {
-      max-width: 780px;
-      margin-bottom: 56px;
-    }
-
-    .section-title {
-      margin: 18px 0 0;
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: clamp(28px, 4.2vw, 50px);
-      line-height: 1.18;
-      letter-spacing: -.01em;
-    }
-
-    .section-lead {
-      max-width: 760px;
-      margin: 18px 0 0;
-      color: var(--muted);
-      font-size: 17px;
-      font-weight: 500;
-    }
-
-    /* ---------- window frame (screenshot chrome) ---------- */
-    .frame {
+    /* ---------- screenshot cards ---------- */
+    .shot {
       margin: 0;
-      border: 1px solid var(--line-2);
       border-radius: var(--r);
-      background: linear-gradient(180deg, var(--panel-2), var(--panel));
-      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+      background: #fff;
+      box-shadow: var(--shadow-shot);
       overflow: hidden;
     }
-
-    .frame-bar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 11px 16px;
-      border-bottom: 1px solid var(--line);
-      background: rgba(255, 255, 255, .025);
-    }
-
-    .frame-bar .dots {
-      display: inline-flex;
-      gap: 7px;
-    }
-
-    .frame-bar .dots i {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: #2a3340;
-    }
-
-    .frame-bar .dots i:nth-child(1) { background: #e06c5e; }
-    .frame-bar .dots i:nth-child(2) { background: #e0b15e; }
-    .frame-bar .dots i:nth-child(3) { background: #5ec27a; }
-
-    .frame-bar .frame-title {
-      font-family: var(--font-mono);
-      font-size: 12.5px;
-      color: var(--muted);
-      letter-spacing: .02em;
-    }
-
-    .frame img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
+    .shot img { display: block; width: 100%; height: auto; }
 
     /* ---------- demo ---------- */
     .demo-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(290px, .6fr);
-      gap: 40px;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr);
+      gap: 44px;
       align-items: start;
     }
-
-    .feature-list {
-      display: grid;
-      gap: 2px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
+    .feature-list { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
     .feature-list li {
       position: relative;
-      padding: 13px 13px 13px 30px;
+      padding: 12px 12px 12px 30px;
       border-radius: 9px;
-      color: rgba(238, 243, 250, .82);
+      color: var(--ink-2);
       font-weight: 500;
       font-size: 14.5px;
+      line-height: 1.6;
       transition: background .18s ease, color .18s ease;
     }
-
     .feature-list li::before {
       content: "";
       position: absolute;
-      left: 9px;
-      top: 21px;
+      left: 8px;
+      top: 20px;
       width: 7px;
       height: 7px;
       border-radius: 2px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      background: var(--accent);
       transform: rotate(45deg);
     }
-
-    .feature-list li:hover {
-      background: rgba(77, 163, 255, .07);
-      color: var(--ink);
-    }
+    .feature-list li:hover { background: var(--accent-soft); color: var(--ink); }
 
     /* ---------- use cases ---------- */
     .use-cases {
@@ -557,73 +391,46 @@
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 18px;
     }
-
     .use-case {
       position: relative;
       padding: 26px 22px 24px;
       border: 1px solid var(--line);
       border-radius: var(--r);
-      background: linear-gradient(180deg, rgba(255, 255, 255, .035), rgba(255, 255, 255, .01));
-      overflow: hidden;
+      background: var(--paper);
       transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
     }
-
-    .use-case::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background: radial-gradient(420px 200px at 50% -40%, rgba(77, 163, 255, .16), transparent 70%);
-      opacity: 0;
-      transition: opacity .25s ease;
-      pointer-events: none;
-    }
-
     .use-case:hover {
-      transform: translateY(-5px);
-      border-color: rgba(77, 163, 255, .4);
-      box-shadow: 0 22px 50px -26px rgba(0, 0, 0, .8);
+      transform: translateY(-4px);
+      border-color: var(--line-2);
+      box-shadow: var(--shadow-card);
     }
-
-    .use-case:hover::after { opacity: 1; }
-
     .uc-icon {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 46px;
-      height: 46px;
+      width: 44px;
+      height: 44px;
       margin-bottom: 18px;
       border-radius: 12px;
       color: var(--accent);
-      background: rgba(77, 163, 255, .1);
-      border: 1px solid rgba(77, 163, 255, .22);
+      background: var(--accent-soft);
     }
-
-    .uc-icon svg { width: 23px; height: 23px; }
-
+    .uc-icon svg { width: 22px; height: 22px; }
     .use-case strong {
       display: block;
-      margin-bottom: 9px;
+      margin-bottom: 8px;
       font-family: var(--font-display);
       font-weight: 700;
-      font-size: 18px;
-      line-height: 1.35;
+      font-size: 17px;
     }
-
-    .use-case p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .uc-index {
+    .use-case p { margin: 0; color: var(--muted); font-size: 14px; }
+    .uc-key {
       position: absolute;
-      top: 18px;
-      right: 18px;
+      top: 20px;
+      right: 20px;
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 11px;
+      letter-spacing: .04em;
       color: var(--faint);
     }
 
@@ -631,48 +438,37 @@
     .split-feature {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 52px;
+      gap: 56px;
       align-items: center;
-      margin-top: 90px;
     }
-
+    .split-feature + .split-feature { margin-top: 96px; }
     .split-feature.reverse .split-media { order: 2; }
-
     .split-feature h3 {
-      margin: 16px 0 0;
+      margin: 0;
       font-family: var(--font-display);
       font-weight: 900;
-      font-size: clamp(24px, 3vw, 34px);
-      line-height: 1.25;
-      letter-spacing: -.01em;
+      font-size: clamp(23px, 3vw, 33px);
+      line-height: 1.28;
+      letter-spacing: -.02em;
     }
-
-    .detail-list {
-      display: grid;
-      gap: 14px;
-      margin: 26px 0 0;
-      padding: 0;
-      list-style: none;
-    }
-
+    .detail-list { display: grid; gap: 13px; margin: 24px 0 0; padding: 0; list-style: none; }
     .detail-list li {
       position: relative;
-      padding-left: 30px;
-      color: rgba(238, 243, 250, .8);
+      padding-left: 28px;
+      color: var(--ink-2);
       font-weight: 500;
       font-size: 15px;
+      line-height: 1.6;
     }
-
     .detail-list li::before {
       content: "";
       position: absolute;
-      left: 4px;
-      top: 11px;
-      width: 12px;
-      height: 12px;
+      left: 2px;
+      top: 9px;
+      width: 11px;
+      height: 11px;
       border-radius: 50%;
       border: 2px solid var(--accent);
-      box-shadow: inset 0 0 0 2px rgba(77, 163, 255, .25);
     }
 
     /* ---------- gallery ---------- */
@@ -680,227 +476,231 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 22px;
-      margin-top: 90px;
+      margin-top: 96px;
     }
-
     .gallery-item {
       display: flex;
       flex-direction: column;
       border: 1px solid var(--line);
       border-radius: var(--r);
-      background: linear-gradient(180deg, var(--panel-2), var(--panel));
+      background: var(--paper);
       overflow: hidden;
       transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
     }
-
     .gallery-item:hover {
-      transform: translateY(-5px);
-      border-color: rgba(77, 163, 255, .35);
-      box-shadow: var(--shadow);
+      transform: translateY(-4px);
+      border-color: var(--line-2);
+      box-shadow: var(--shadow-card);
     }
-
-    .gallery-item.wide { grid-column: 1 / -1; }
-
-    .gallery-item.wide { flex-direction: row; }
-
-    .gallery-item.wide .gallery-shot { flex: 1 1 58%; min-width: 0; }
-
-    .gallery-item.wide .gallery-copy {
-      flex: 1 1 42%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .gallery-shot {
-      border-bottom: 1px solid var(--line);
-    }
-
-    .gallery-item.wide .gallery-shot {
-      border-bottom: none;
-      border-right: 1px solid var(--line);
-    }
-
-    .gallery-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 14px;
-      border-bottom: 1px solid var(--line);
-      background: rgba(255, 255, 255, .02);
+    .gallery-item.wide { grid-column: 1 / -1; flex-direction: row; }
+    .gallery-item.wide .gallery-shot { flex: 1 1 58%; min-width: 0; border-right: 1px solid var(--line); }
+    .gallery-item.wide .gallery-copy { flex: 1 1 42%; display: flex; flex-direction: column; justify-content: center; }
+    .gallery-shot { border-bottom: 1px solid var(--line); background: var(--paper-2); }
+    .gallery-shot img { display: block; width: 100%; height: auto; }
+    .gallery-copy { padding: 24px; }
+    .gallery-copy .tag {
+      display: inline-block;
+      margin-bottom: 12px;
       font-family: var(--font-mono);
-      font-size: 11.5px;
-      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent-ink);
     }
-
-    .gallery-bar .dots { display: inline-flex; gap: 6px; }
-    .gallery-bar .dots i { width: 9px; height: 9px; border-radius: 50%; background: #2a3340; }
-
-    /* Windows製品なので、Mac風のウィンドウ枠(タイトルバー＋信号機ドット)は出さない */
-    .frame-bar, .gallery-bar { display: none; }
-
-    .gallery-shot img {
-      display: block;
-      width: 100%;
-      height: auto;
-      background: var(--panel-2);
-    }
-
-    .gallery-copy { padding: 22px; }
-
     .gallery-copy h4 {
-      margin: 0 0 9px;
+      margin: 0 0 8px;
       font-family: var(--font-display);
       font-weight: 700;
-      font-size: 19px;
+      font-size: 18px;
       line-height: 1.35;
     }
+    .gallery-copy p { margin: 0; color: var(--muted); font-size: 14.5px; }
 
-    .gallery-copy p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14.5px;
-      font-weight: 500;
+    /* ---------- media band (録画・録音・音声入力) ---------- */
+    .media-band {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: 40px;
+      align-items: center;
+      margin-top: 96px;
+      padding: 36px 40px;
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      background: var(--paper);
     }
+    .media-band .tag {
+      display: inline-block;
+      margin-bottom: 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent-ink);
+    }
+    .media-band h4 {
+      margin: 0 0 10px;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: clamp(20px, 2.4vw, 26px);
+      line-height: 1.3;
+      letter-spacing: -.01em;
+    }
+    .media-band p { margin: 0; color: var(--muted); font-size: 14.5px; }
+    .media-band-shot { align-self: center; }
 
-    /* ---------- CTA ---------- */
-    .cta-band { padding-block: 0; }
+    /* ---------- BOOTH未対応バッジ / 脚注 ---------- */
+    .badge-booth {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(199, 122, 42, .32);
+      background: rgba(224, 145, 58, .1);
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: .03em;
+      color: #b0691f;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+    .badge-booth::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #e0913a;
+      flex: 0 0 auto;
+    }
+    .li-note {
+      margin-left: 8px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: .02em;
+      color: #b0691f;
+      white-space: nowrap;
+    }
+    .booth-note {
+      margin: 40px 0 0;
+      padding: 18px 22px;
+      border: 1px solid var(--line);
+      border-left: 3px solid #e0913a;
+      border-radius: 12px;
+      background: var(--paper);
+      color: var(--ink-2);
+      font-size: 13.5px;
+      line-height: 1.7;
+    }
+    .booth-note strong { color: var(--ink); font-weight: 700; }
 
+    /* ---------- CTA (one bold moment: dark panel on light page) ---------- */
+    .cta-band { padding-block: 0 118px; }
     .cta-card {
       position: relative;
-      width: min(1180px, 100%);
-      margin: 0 auto;
-      padding: 64px 56px;
-      border: 1px solid var(--line-2);
-      border-radius: 26px;
-      background:
-        radial-gradient(700px 300px at 80% -20%, rgba(88, 230, 207, .14), transparent 60%),
-        radial-gradient(700px 400px at 0% 120%, rgba(77, 163, 255, .2), transparent 60%),
-        linear-gradient(180deg, var(--panel-2), var(--panel));
+      padding: 66px 56px;
+      border-radius: 24px;
+      background: linear-gradient(160deg, #14171d, #0c0e12);
+      color: #fff;
       overflow: hidden;
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
       align-items: center;
       gap: 32px;
     }
-
     .cta-card::before {
       content: "";
       position: absolute;
       inset: 0;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, .04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, .04) 1px, transparent 1px);
-      background-size: 40px 40px;
-      mask-image: radial-gradient(circle at 30% 50%, #000, transparent 70%);
-      -webkit-mask-image: radial-gradient(circle at 30% 50%, #000, transparent 70%);
+      background: radial-gradient(600px 300px at 100% 0%, rgba(47, 92, 255, .32), transparent 60%);
       pointer-events: none;
     }
-
     .cta-card > * { position: relative; }
-
+    .cta-card .eyebrow { color: #8fa6ff; }
+    .cta-card .eyebrow::before { background: #8fa6ff; }
     .cta-card h2 {
-      margin: 14px 0 0;
+      margin: 0;
       font-family: var(--font-display);
       font-weight: 900;
-      font-size: clamp(28px, 4vw, 44px);
-      line-height: 1.15;
-      letter-spacing: -.01em;
+      font-size: clamp(27px, 3.6vw, 42px);
+      line-height: 1.16;
+      letter-spacing: -.02em;
     }
-
-    .cta-card p {
-      margin: 14px 0 0;
-      color: var(--muted);
-      font-size: 16px;
-      font-weight: 500;
-    }
+    .cta-card p { margin: 16px 0 0; color: rgba(255, 255, 255, .74); font-size: 16px; }
 
     /* ---------- footer ---------- */
     footer {
-      margin-top: 110px;
-      padding: 40px 24px;
+      padding: 40px 0;
       border-top: 1px solid var(--line);
       color: var(--muted);
       font-family: var(--font-mono);
       font-size: 13px;
     }
-
     .footer-inner {
-      width: min(1180px, 100%);
-      margin: 0 auto;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
     }
-
     .footer-inner .brand { font-size: 14px; }
 
     /* ---------- reveal animation ---------- */
     [data-reveal] {
       opacity: 0;
-      transform: translateY(26px);
+      transform: translateY(22px);
       transition: opacity .7s cubic-bezier(.2, .7, .2, 1), transform .7s cubic-bezier(.2, .7, .2, 1);
       transition-delay: var(--delay, 0ms);
     }
+    [data-reveal].in { opacity: 1; transform: none; }
 
-    [data-reveal].in {
-      opacity: 1;
-      transform: none;
-    }
-
-    /* hero load stagger */
     .hero [data-load] {
       opacity: 0;
-      transform: translateY(22px);
+      transform: translateY(20px);
       animation: rise .9s cubic-bezier(.2, .7, .2, 1) forwards;
       animation-delay: var(--d, 0ms);
     }
-
-    @keyframes rise {
-      to { opacity: 1; transform: none; }
-    }
+    @keyframes rise { to { opacity: 1; transform: none; } }
 
     /* ---------- responsive ---------- */
-    @media (max-width: 920px) {
-      .demo-grid { grid-template-columns: 1fr; gap: 28px; }
-      .split-feature, .split-feature.reverse { grid-template-columns: 1fr; gap: 28px; margin-top: 64px; }
+    @media (max-width: 960px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+      .hero-shot { order: 2; }
+      .demo-grid { grid-template-columns: 1fr; gap: 30px; }
+      .split-feature, .split-feature.reverse { grid-template-columns: 1fr; gap: 30px; }
       .split-feature.reverse .split-media { order: 0; }
       .use-cases { grid-template-columns: repeat(2, 1fr); }
       .gallery-item.wide { flex-direction: column; }
       .gallery-item.wide .gallery-shot { border-right: none; border-bottom: 1px solid var(--line); }
-      .cta-card { grid-template-columns: 1fr; padding: 44px 28px; }
+      .media-band { grid-template-columns: 1fr; padding: 30px 24px; }
+      .cta-card { grid-template-columns: 1fr; padding: 48px 30px; }
     }
-
     @media (max-width: 860px) {
       .nav-links a:not(.button) { display: none; }
     }
-
     @media (max-width: 600px) {
-      section { padding: 76px 18px; }
-      .hero { padding: 130px 18px 64px; }
-      .nav { padding: 14px 18px; }
+      section { padding: 76px 0; }
+      .hero { padding: 128px 0 64px; }
+      .wrap { padding-inline: 18px; }
       .use-cases, .feature-gallery { grid-template-columns: 1fr; }
       .hero-actions { display: grid; grid-template-columns: 1fr; width: 100%; }
-      .hero-actions .button { width: 100%; }
-      .cta-actions .button { width: 100%; }
+      .hero-actions .button, .cta-actions .button { width: 100%; }
       .section-head { margin-bottom: 40px; }
     }
-
+    @media (max-width: 440px) {
+      .brand span { display: none; }
+    }
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation: none !important;
-        transition: none !important;
-      }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
       [data-reveal], .hero [data-load] { opacity: 1; transform: none; }
     }
   </style>
   <script>
     (() => {
-      if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
-      }
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
       const resetScrollIfNeeded = () => {
         if (window.location.hash) return;
         window.scrollTo(0, 0);
@@ -916,69 +716,75 @@
   <!-- X Pixel を使う場合は、X Ads のイベントタグをここへ追加します。 -->
 </head>
 <body>
-  <div class="grain" aria-hidden="true"></div>
-
   <header class="site-header" id="siteHeader">
-    <nav class="nav" aria-label="メインナビゲーション">
-      <a class="brand" href="#top" aria-label="Window Memo Switcher トップ">
-        <img src="assets/WindowMemoSwitcher_256.png" alt="">
-        <span>Window Memo Switcher</span>
-      </a>
-      <div class="nav-links">
-        <a href="#demo">demo</a>
-        <a href="#usecases">usecases</a>
-        <a href="#features">features</a>
-        <a class="button primary" href="https://liangsen.booth.pm/items/8373389" target="_blank" rel="noopener">無料ダウンロード ↗</a>
-      </div>
-    </nav>
+    <div class="wrap">
+      <nav class="nav" aria-label="メインナビゲーション">
+        <a class="brand" href="#top" aria-label="Window Memo Switcher トップ">
+          <img src="assets/WindowMemoSwitcher_256.png" alt="">
+          <span>Window Memo Switcher</span>
+        </a>
+        <div class="nav-links">
+          <a href="#demo">demo</a>
+          <a href="#usecases">usecases</a>
+          <a href="#features">features</a>
+          <a class="button primary" href="https://liangsen.booth.pm/items/8373389" target="_blank" rel="noopener">無料ダウンロード ↗</a>
+        </div>
+      </nav>
+    </div>
   </header>
 
   <main id="top">
     <!-- ===== HERO ===== -->
     <section class="hero" aria-labelledby="hero-title">
-      <span class="hero-orb" aria-hidden="true"></span>
-      <div class="hero-inner">
-        <span class="status" data-load style="--d:0ms"><span class="dot" aria-hidden="true"></span>Windows 11 に常駐中 · keyboard-first</span>
-        <h1 id="hero-title" data-load style="--d:90ms"><span class="line">切り替える。残す。</span><span class="line gradient-text">あとから見つける。</span></h1>
-        <p class="hero-copy" data-load style="--d:200ms">作業中のウィンドウ、資料、フォルダー、画像メモ、履歴を、ひとつの操作面から扱うWindows向け常駐ツールです。</p>
-        <div class="hero-actions" data-load style="--d:300ms">
-          <a class="button primary" href="https://liangsen.booth.pm/items/8373389" target="_blank" rel="noopener">BOOTHで無料ダウンロード ↗</a>
-          <a class="button secondary" href="#demo">実画面を見る ↓</a>
+      <div class="wrap">
+        <div class="hero-grid">
+          <div class="hero-text">
+            <span class="status" data-load style="--d:0ms"><span class="dot" aria-hidden="true"></span>Windows 11 に常駐 · keyboard-first</span>
+            <h1 id="hero-title" data-load style="--d:90ms">
+              <span class="line">切り替える。</span>
+              <span class="line">残す。</span>
+              <span class="line accent">あとから見つける。</span>
+            </h1>
+            <p class="hero-copy" data-load style="--d:200ms">仕事の資料も、旅行の計画も、推し活のメモも。ウィンドウ切替・画面キャプチャ・付箋メモ・履歴検索を、ひとつの操作面で扱うWindows向け常駐ツールです。</p>
+            <div class="hero-actions" data-load style="--d:300ms">
+              <a class="button primary" href="https://liangsen.booth.pm/items/8373389" target="_blank" rel="noopener">BOOTHで無料ダウンロード ↗</a>
+              <a class="button ghost" href="#demo">実画面を見る ↓</a>
+            </div>
+            <ul class="shortcut-strip" data-load style="--d:420ms" aria-label="主なショートカット">
+              <li><span class="kbd-combo"><span class="kbd">Ctrl</span><span class="plus">+</span><span class="kbd">Shift</span><span class="plus">+</span><span class="kbd">Space</span></span> 切替</li>
+              <li><span class="kbd-combo"><span class="kbd">Ctrl</span><span class="plus">+</span><span class="kbd">W</span></span> 範囲キャプチャ</li>
+              <li><span class="kbd-combo"><span class="kbd">Ctrl</span><span class="plus">+</span><span class="kbd">Shift</span><span class="plus">+</span><span class="kbd">M</span></span> 付箋メモ</li>
+              <li><span class="kbd-combo"><span class="kbd">Ctrl</span><span class="plus">+</span><span class="kbd">F</span></span> 履歴検索</li>
+            </ul>
+          </div>
+          <figure class="hero-shot shot" data-load style="--d:260ms">
+            <img src="assets/landing_hero.png" alt="ホテル予約とカフェのブラウザの上でウィンドウ一覧を開いた実画面">
+          </figure>
         </div>
-        <ul class="shortcut-strip" data-load style="--d:420ms" aria-label="主なショートカット">
-          <li><span class="kbd-combo"><span class="kbd">Ctrl</span><span class="plus">+</span><span class="kbd">Shift</span><span class="plus">+</span><span class="kbd">Space</span></span> 切替</li>
-          <li><span class="kbd-combo"><span class="kbd">Ctrl</span><span class="plus">+</span><span class="kbd">Shift</span><span class="plus">+</span><span class="kbd">M</span></span> 付箋メモ</li>
-          <li><span class="kbd-combo"><span class="kbd">Ctrl</span><span class="plus">+</span><span class="kbd">W</span></span> 範囲キャプチャ</li>
-          <li><span class="kbd-combo"><span class="kbd">Ctrl</span><span class="plus">+</span><span class="kbd">F</span></span> 履歴検索</li>
-        </ul>
       </div>
     </section>
 
     <!-- ===== DEMO ===== -->
-    <section id="demo" aria-labelledby="demo-title">
-      <div class="section-inner">
+    <section id="demo" class="alt" aria-labelledby="demo-title">
+      <div class="wrap">
         <div class="section-head" data-reveal>
-          <span class="overline">01 — Demo</span>
+          <p class="eyebrow">Live demo</p>
           <h2 id="demo-title" class="section-title">作業の入口と記録を、ひとつにまとめる。</h2>
           <p class="section-lead">開いているウィンドウへ戻る、よく使う資料を開く、作業ログをたどる、画面を切り取って残す。日々の細かい移動と記録を、同じ画面で扱えます。</p>
         </div>
         <div class="demo-grid">
-          <figure class="frame" data-reveal>
-            <div class="frame-bar">
-              <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
-              <span class="frame-title">Window Memo Switcher — live demo</span>
-            </div>
+          <figure class="shot" data-reveal>
             <img src="assets/landing_demo.gif" alt="実際の付箋メモ入力から履歴表示までのデモ">
           </figure>
           <ul class="feature-list" data-reveal style="--delay:120ms">
             <li>大量に開いたExcelやWordをファイル名一覧からすぐ選択</li>
             <li>お気に入りのフォルダー、ファイル、URLを起動</li>
-            <li>作業ログから直近の流れを確認</li>
             <li>Ctrl + Wで指定ウィンドウの指定領域を付箋メモへ貼り付け</li>
-            <li>Web会議やYouTubeなどの動画の一場面を、必要な部分だけ切り取って保存</li>
             <li>貼った画像にペン、直線、四角、矢印、文字で書き込み</li>
-            <li>メモ、画像、Todoを履歴として保存</li>
-            <li>検索欄からキーワードで素早く探し直す</li>
+            <li>メモと画像を履歴に残し、キーワードで探し直す</li>
+            <li>作業ログから1日の流れを確認<span class="li-note">AI日報はBOOTH版では非対応</span></li>
+            <li>割り込み前に「中断しおり」で作業状態を保存、1クリックで復帰</li>
+            <li>範囲指定の録画、録音、音声入力、文字起こし<span class="li-note">BOOTH版では非対応</span></li>
             <li>必要な履歴をExcel / ZIPで出力</li>
           </ul>
         </div>
@@ -987,15 +793,15 @@
 
     <!-- ===== USE CASES ===== -->
     <section id="usecases" aria-labelledby="target-title">
-      <div class="section-inner">
+      <div class="wrap">
         <div class="section-head" data-reveal>
-          <span class="overline">02 — Use cases</span>
-          <h2 id="target-title" class="section-title">何度も画面を行き来する作業へ。</h2>
-          <p class="section-lead">Excel、Word、Chromeなどのブラウザ、フォルダーを何度も往復する作業で、開く・戻る・残す・探すを短い操作にまとめます。</p>
+          <p class="eyebrow">Use cases</p>
+          <h2 id="target-title" class="section-title">仕事も、暮らしの段取りも。</h2>
+          <p class="section-lead">資料づくりの合間にホテルを比較して、レシピを保存して、また仕事に戻る。画面を何度も行き来する毎日の、開く・戻る・残す・探すを短い操作にまとめます。</p>
         </div>
         <div class="use-cases">
           <div class="use-case" data-reveal style="--delay:0ms">
-            <span class="uc-index">01</span>
+            <span class="uc-key">Ctrl+Shift+Space</span>
             <span class="uc-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M8 14h6"/></svg>
             </span>
@@ -1003,7 +809,7 @@
             <p>大量に開いたExcelやWordも、ファイル名の一覧から探してすぐ前面に戻せます。</p>
           </div>
           <div class="use-case" data-reveal style="--delay:90ms">
-            <span class="uc-index">02</span>
+            <span class="uc-key">favorites</span>
             <span class="uc-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9 6.8 19.2l1-5.8L3.5 9.2l5.9-.9z"/></svg>
             </span>
@@ -1011,15 +817,15 @@
             <p>よく使うフォルダー、ファイル、URLをグループごとに整理して開けます。</p>
           </div>
           <div class="use-case" data-reveal style="--delay:180ms">
-            <span class="uc-index">03</span>
+            <span class="uc-key">Ctrl+W</span>
             <span class="uc-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v14a2 2 0 0 0 2 2h14"/><path d="M3 7h14a2 2 0 0 1 2 2v14"/></svg>
             </span>
             <strong>画面キャプチャ</strong>
-            <p>Web会議やYouTubeなどの動画の一場面も、指定した領域だけをCtrl+Wで切り取ってメモに貼れます。</p>
+            <p>予約ページの比較も、動画の一場面も。指定した領域だけをCtrl+Wで切り取ってメモに貼れます。</p>
           </div>
           <div class="use-case" data-reveal style="--delay:270ms">
-            <span class="uc-index">04</span>
+            <span class="uc-key">Ctrl+F</span>
             <span class="uc-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 4v4h4"/><path d="M12 8v4l3 2"/></svg>
             </span>
@@ -1031,52 +837,83 @@
     </section>
 
     <!-- ===== FEATURES ===== -->
-    <section id="features" aria-labelledby="features-title">
-      <div class="section-inner">
+    <section id="features" class="alt" aria-labelledby="features-title">
+      <div class="wrap">
         <div class="section-head" data-reveal>
-          <span class="overline">03 — Features</span>
-          <h2 id="features-title" class="section-title">切替、起動、記録、検索。</h2>
-          <p class="section-lead">Window Memo Switcherは、作業中の移動と記録を支える常駐ツールです。開いている画面へ戻る、よく使う資料を開く、気づきを画像ごと残す操作を、まとめて扱えます。</p>
+          <p class="eyebrow">Features</p>
+          <h2 id="features-title" class="section-title">切替、記録、検索、日報まで。</h2>
+          <p class="section-lead">開いている画面へ戻る、気づきを画像ごと残す、あとから探し直す。さらに中断からの復帰やAIによる日報作成まで、1日の流れをまるごと支えます。</p>
         </div>
 
         <div class="split-feature">
-          <figure class="frame split-media" data-reveal>
-            <div class="frame-bar">
-              <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
-              <span class="frame-title">付箋メモ</span>
-            </div>
-            <img src="assets/landing_sticky.png" alt="実際の付箋メモ画面">
+          <figure class="shot split-media" data-reveal>
+            <img src="assets/landing_sticky.png" alt="旅行プランとホテルの写真を貼った実際の付箋メモ画面">
           </figure>
           <div data-reveal style="--delay:120ms">
-            <span class="overline">capture &amp; annotate</span>
-            <h3>必要な画面を、必要な形で残す。</h3>
+            <div class="key-eyebrow">
+              <span class="kbd-combo"><span class="kbd">Ctrl</span><span class="plus">+</span><span class="kbd">W</span></span>
+              <span class="label">capture &amp; memo</span>
+            </div>
+            <h3>気になった画面を、そのままメモに。</h3>
             <ul class="detail-list">
-              <li>作業中に気づいた内容をグループ、タイトル、本文、画像で保存</li>
-              <li>貼り付けた画像にペン、直線、四角、矢印、文字を入れて、そのままメモ化</li>
-              <li>書き込んだ内容は後から移動、削除、文字編集が可能</li>
-              <li>Todo、ピン留め、ゴミ箱で状態を分けて整理</li>
-              <li><span class="kbd-combo"><span class="kbd">Ctrl</span><span class="plus">+</span><span class="kbd">W</span></span> で指定ウィンドウの指定領域をそのままメモへ貼り付け</li>
-              <li>Web会議、YouTubeなどの動画、資料画面の一部を必要な形で切り貼り</li>
+              <li>ホテルの予約ページ、レシピ動画、会議資料。指定した範囲だけをCtrl+Wで付箋メモへ</li>
+              <li>グループ、タイトル、本文、画像でさっと整理</li>
+              <li>ピン留め、ゴミ箱で状態を分けて管理</li>
+              <li>録画、録音、音声入力のボタンもメモ画面に<span class="li-note">BOOTH版では非対応</span></li>
             </ul>
           </div>
         </div>
 
         <div class="split-feature reverse">
-          <figure class="frame split-media" data-reveal>
-            <div class="frame-bar">
-              <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
-              <span class="frame-title">履歴検索</span>
-            </div>
-            <img src="assets/landing_history.png" alt="実際の付箋メモ履歴検索画面">
+          <figure class="shot split-media" data-reveal>
+            <img src="assets/landing_ai_report.png" alt="作業ログからAIが自動生成した日報の実画面">
           </figure>
           <div data-reveal style="--delay:120ms">
-            <span class="overline">recall</span>
-            <h3>作業の続きに、戻りやすい。</h3>
+            <div class="key-eyebrow">
+              <span class="label">AI daily report</span>
+              <span class="badge-booth">BOOTH版では非対応</span>
+            </div>
+            <h3>今日やったことは、AIが日報にする。</h3>
             <ul class="detail-list">
-              <li>残した付箋メモを日付別、グループ別に確認</li>
-              <li>キーワード検索で過去のメモを探し直し</li>
-              <li>画像付きメモだけを絞り込み</li>
-              <li>必要な履歴をExcel / ZIPで出力</li>
+              <li>開いていた資料と時間の記録から、AIが日報の下書きを自動生成</li>
+              <li>【今日の作業】【メモ・気づき】【明日の予定】まで整った形で出力</li>
+              <li>そのまま編集してコピーするだけ。日報のために記憶をたどる時間をゼロに</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="split-feature">
+          <figure class="shot split-media" data-reveal>
+            <img src="assets/landing_bookmark.png" alt="中断しおりにメモ付きで作業状態を保存した実画面">
+          </figure>
+          <div data-reveal style="--delay:120ms">
+            <div class="key-eyebrow">
+              <span class="label">interruption bookmark</span>
+            </div>
+            <h3>割り込みが来ても、迷わず戻れる。</h3>
+            <ul class="detail-list">
+              <li>宅配、電話、急な呼び出し。中断前に「しおり」を1枚挟むだけ</li>
+              <li>ひとことメモと、開いていたウィンドウの状態をまとめて記録</li>
+              <li>戻ったら1クリックで作業中の画面へフォーカス復帰</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="split-feature reverse">
+          <figure class="shot split-media" data-reveal>
+            <img src="assets/landing_history_search.png" alt="「ソウル」で検索した付箋メモ履歴の実画面">
+          </figure>
+          <div data-reveal style="--delay:120ms">
+            <div class="key-eyebrow">
+              <span class="kbd-combo"><span class="kbd">Ctrl</span><span class="plus">+</span><span class="kbd">F</span></span>
+              <span class="label">recall</span>
+            </div>
+            <h3>「あれどこだっけ」を、検索で終わらせる。</h3>
+            <ul class="detail-list">
+              <li>残したメモと画像を日付別、グループ別に一覧</li>
+              <li>キーワード検索で数週間前のメモも一瞬で発掘</li>
+              <li>画像付き、動画付き、音声付きだけの絞り込みも</li>
+              <li>必要な分だけExcel / ZIPで出力</li>
             </ul>
           </div>
         </div>
@@ -1084,93 +921,111 @@
         <div class="feature-gallery" aria-label="その他の主要機能">
           <article class="gallery-item wide" data-reveal>
             <div class="gallery-shot">
-              <div class="gallery-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>capture flow</div>
-              <img src="assets/landing_capture_flow.png" alt="キャプチャ範囲をドラッグ指定して付箋メモへ貼り付ける画面">
+              <img src="assets/landing_capture_range.png" alt="ホテル予約ページの上でキャプチャ範囲をドラッグ指定している実画面">
             </div>
             <div class="gallery-copy">
-              <span class="overline">Ctrl + W</span>
+              <span class="tag">Ctrl + W</span>
               <h4>指定範囲キャプチャ</h4>
-              <p>Ctrl+Wで、指定したウィンドウの必要な部分だけを切り取り、付箋メモへ貼り付けられます。Web会議や動画、資料画面の一場面を残すときに使えます。</p>
+              <p>残したい部分をドラッグでなぞるだけ。ウィンドウごと、領域ごとに切り取って、そのまま付箋メモに貼り付きます。Web会議や動画の一場面にも。</p>
             </div>
           </article>
           <article class="gallery-item" data-reveal style="--delay:90ms">
             <div class="gallery-shot">
-              <div class="gallery-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>画像編集</div>
-              <img src="assets/landing_annotation_editor.png" alt="画像編集画面で四角、矢印、文字を書き込んでいる画面">
+              <img src="assets/landing_annotation_editor.png" alt="キャプチャした画像に四角と矢印を書き込んでいる画像編集画面">
             </div>
             <div class="gallery-copy">
+              <span class="tag">annotate</span>
               <h4>画像編集ツール</h4>
-              <p>貼り付けた画像に、ペン、直線、四角、矢印、文字でメモを書き込めます。書き込んだ内容は後から移動や削除もできます。</p>
+              <p>貼り付けた画像に、ペン、直線、四角、矢印、文字で書き込み。あとから移動や削除もできます。</p>
             </div>
           </article>
           <article class="gallery-item" data-reveal style="--delay:180ms">
             <div class="gallery-shot">
-              <div class="gallery-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>ウィンドウ選択</div>
-              <img src="assets/landing_switcher.png" alt="ウィンドウ切替画面">
+              <img src="assets/landing_switcher.png" alt="しおり行と最近使った項目が並ぶウィンドウ切替の実画面">
             </div>
             <div class="gallery-copy">
+              <span class="tag">switch</span>
               <h4>ウィンドウ切替</h4>
-              <p>Windowsのプレビューでは追いづらい大量のExcelやWordも、ファイル名の一覧からキーボードで選べます。</p>
+              <p>大量に開いたExcelやWordも、ファイル名の一覧からキーボードで選ぶだけ。プレビューを目で追う時間がなくなります。</p>
             </div>
           </article>
           <article class="gallery-item" data-reveal style="--delay:90ms">
             <div class="gallery-shot">
-              <div class="gallery-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>お気に入り</div>
-              <img src="assets/landing_favorites.png" alt="お気に入り画面">
+              <img src="assets/landing_favorites.png" alt="旅行準備や推し活のグループで整理したお気に入りの実画面">
             </div>
             <div class="gallery-copy">
+              <span class="tag">favorites</span>
               <h4>お気に入り</h4>
-              <p>よく使うフォルダー、ファイル、URLをグループ化し、関連メモも一緒に持てます。</p>
+              <p>よく使うフォルダー、ファイル、URLをグループで整理。それぞれにメモも添えられます。</p>
             </div>
           </article>
           <article class="gallery-item" data-reveal style="--delay:180ms">
             <div class="gallery-shot">
-              <div class="gallery-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>作業ログ</div>
-              <img src="assets/landing_worklog.png" alt="作業ログ画面">
+              <img src="assets/landing_worklog.png" alt="日別サマリと日報作成リンクのある作業ログの実画面">
             </div>
             <div class="gallery-copy">
+              <span class="tag">worklog</span>
               <h4>作業ログ</h4>
-              <p>直近で開いたウィンドウや資料を日別にたどり、作業の流れを後から確認できます。</p>
+              <p>開いたウィンドウと資料を日別に自動記録。何にどれだけ時間を使ったかが、サマリでひと目で分かります。</p>
             </div>
           </article>
         </div>
+
+        <div class="media-band" data-reveal>
+          <div class="media-band-copy">
+            <span class="tag">record &amp; voice</span>
+            <h4>録画も、録音も、声のメモも。 <span class="badge-booth">BOOTH版では非対応</span></h4>
+            <p>範囲指定の動画録画、会議の録音、音声入力と文字起こし、AIへの問い合わせ・翻訳・要約まで。付箋メモの下のボタンから、そのまま使えます。</p>
+          </div>
+          <figure class="shot media-band-shot">
+            <img src="assets/landing_media_buttons.png" alt="付箋メモ下部の範囲指定・録画・録音・音声入力ボタン">
+          </figure>
+        </div>
+
+        <p class="booth-note" data-reveal>
+          <strong>BOOTHで配布中の無料版について：</strong>
+          ウィンドウ切替・お気に入り・範囲キャプチャ・画像編集・付箋メモ・履歴検索・作業ログ・中断しおり・Excel / ZIP出力はそのままお使いいただけます。
+          <strong>AI日報、範囲録画、録音、音声入力、文字起こし、AI連携（問い合わせ・翻訳・要約）は、現在BOOTHで配布している版には含まれていません。</strong>
+        </p>
       </div>
     </section>
 
     <!-- ===== CTA ===== -->
     <section class="cta-band" aria-labelledby="booth-title">
-      <div class="cta-card" data-reveal>
-        <div>
-          <span class="overline">Free download</span>
-          <h2 id="booth-title">BOOTHで無料公開中。</h2>
-          <p>無料版をそのままダウンロードできます。開発を応援したい方向けに開発支援版（中身は無料版と同じ）も用意しています。</p>
-        </div>
-        <div class="cta-actions">
-          <a class="button primary" href="https://liangsen.booth.pm/items/8373389" target="_blank" rel="noopener">BOOTHで見る ↗</a>
+      <div class="wrap">
+        <div class="cta-card" data-reveal>
+          <div>
+            <p class="eyebrow">Free download</p>
+            <h2 id="booth-title">BOOTHで無料公開中。</h2>
+            <p>無料版をそのままダウンロードできます。開発を応援したい方向けに開発支援版（中身は無料版と同じ）も用意しています。</p>
+          </div>
+          <div class="cta-actions">
+            <a class="button primary" href="https://liangsen.booth.pm/items/8373389" target="_blank" rel="noopener">BOOTHで見る ↗</a>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="footer-inner">
-      <a class="brand" href="#top">
-        <img src="assets/WindowMemoSwitcher_256.png" alt="">
-        <span>Window Memo Switcher</span>
-      </a>
-      <span>Windows 11 / BOOTH販売版</span>
+    <div class="wrap">
+      <div class="footer-inner">
+        <a class="brand" href="#top">
+          <img src="assets/WindowMemoSwitcher_256.png" alt="">
+          <span>Window Memo Switcher</span>
+        </a>
+        <span>Windows 11 / BOOTH販売版</span>
+      </div>
     </div>
   </footer>
 
   <script>
     (() => {
-      // header background on scroll
       const header = document.getElementById('siteHeader');
       const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 12);
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
 
-      // scroll reveal
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const targets = document.querySelectorAll('[data-reveal]');
       if (reduce || !('IntersectionObserver' in window)) {
